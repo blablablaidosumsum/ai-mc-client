@@ -2,6 +2,7 @@ package dev.client26;
 
 import dev.client26.gui.HudEditScreen;
 import dev.client26.hud.ModuleManager;
+import dev.client26.util.Compat;
 import dev.client26.util.ScreenOpener;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -27,7 +28,7 @@ public final class ClientCore implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             while (OPEN_GUI.consumeClick()) {
-                if (mc.player != null && mc.screen == null) ScreenOpener.open(new HudEditScreen());
+                if (mc.player != null && Compat.screen() == null) ScreenOpener.open(new HudEditScreen());
             }
             ModuleManager.I.tick(mc);
         });
