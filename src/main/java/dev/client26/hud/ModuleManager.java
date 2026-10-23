@@ -4,6 +4,7 @@ import com.google.gson.*;
 import dev.client26.ClientCore;
 import dev.client26.gui.HudEditScreen;
 import dev.client26.hud.modules.*;
+import dev.client26.util.Compat;
 import dev.client26.util.Gfx;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
@@ -54,8 +55,8 @@ public final class ModuleManager {
 
         HudElementRegistry.replaceElement(VanillaHudElements.CROSSHAIR, original -> (g, delta) -> {
             Minecraft mc = Minecraft.getInstance();
-            if (crosshair.enabled && mc.options.getCameraType().isFirstPerson() && !(mc.screen instanceof HudEditScreen)) {
-                if (!mc.options.hideGui) crosshair.renderOverlay(Gfx.begin(g),
+            if (crosshair.enabled && mc.options.getCameraType().isFirstPerson() && !(Compat.screen() instanceof HudEditScreen)) {
+                if (!Compat.hideGui()) crosshair.renderOverlay(Gfx.begin(g),
                         mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight(), false);
             } else {
                 original.extractRenderState(g, delta);
@@ -65,7 +66,7 @@ public final class ModuleManager {
 
     private void renderAll(net.minecraft.client.gui.GuiGraphicsExtractor g) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui || mc.screen instanceof HudEditScreen) return;
+        if (mc.player == null || Compat.hideGui() || Compat.screen() instanceof HudEditScreen) return;
         Gfx gfx = Gfx.begin(g);
         int sw = mc.getWindow().getGuiScaledWidth(), sh = mc.getWindow().getGuiScaledHeight();
         for (int i = 0; i < arr.length; i++) {
